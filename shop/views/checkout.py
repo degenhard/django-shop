@@ -4,6 +4,7 @@ This models the checkout process using views.
 """
 from django.core.urlresolvers import reverse
 from django.forms import models as model_forms
+from django import forms
 from django.http import HttpResponseRedirect
 
 from shop.forms import BillingShippingForm
@@ -30,7 +31,9 @@ class CheckoutSelectionView(LoginMixin, ShopTemplateView):
         """
         form_class = model_forms.modelform_factory(AddressModel,
                                                    exclude=['user_shipping', 'user_billing'])
-        return form_class
+        class mailform(form_class):
+            email = forms.CharField()
+        return mailform
 
     def get_shipping_form_class(self):
         """
